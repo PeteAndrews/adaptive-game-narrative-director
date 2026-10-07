@@ -1,0 +1,168 @@
+{
+  "id": "road_escalation",
+  "direction": "Develop shared irritation into resistance to yielding, then retaliatory intent and pressure, contingent on the student's responses.",
+  "finalDesiredAction": "tailgating",
+  "initiallyActive": true,
+  "start": "shared_irritation",
+  "activationEvents": [
+    "CAR_CUT_UP",
+    "DRIVER_HONKS"
+  ],
+  "deactivationEvents": [
+    "LESSON_ENCOUNTER_ENDS"
+  ],
+  "topics": [
+    "driver",
+    "road",
+    "traffic",
+    "BMW",
+    "retaliation",
+    "driving"
+  ],
+  "patterns": [
+    "\\b(?:BMW|other driver|that driver|that car|cut (?:us|me) up|backing off|pulled over|tailgat\\w*)\\b"
+  ],
+  "decision": {
+    "stage": "player_decision",
+    "actions": [
+      "tailgate",
+      "stay_back",
+      "PULL_UP_BEHIND_CAR"
+    ],
+    "outcomes": [
+      "COMPLY",
+      "REFUSE"
+    ],
+    "anyScores": {
+      "compliance": 0.7,
+      "resistance": 0.7
+    },
+    "events": [
+      "PLAYER_TAILGATES",
+      "BMW_PULLS_OVER"
+    ]
+  },
+  "beats": [
+    {
+      "id": "shared_irritation",
+      "minTurns": 1,
+      "objective": "Share an ordinary irritated reaction to the other driver's established behaviour. Stay with the current remark.",
+      "constraints": [
+        "Do not propose a retaliatory manoeuvre or issue a driving demand."
+      ],
+      "advance": {
+        "to": "discourage_submission",
+        "anyScores": {
+          "alignment_with_npc": 0.6,
+          "humour": 0.6,
+          "agreement": 0.6
+        }
+      },
+      "actionResponses": {
+        "distance": {
+          "objective": "Acknowledge that the student is easing off, but express a small disagreement with continuing to yield to the other driver. A restrained hint or mild dig is enough.",
+          "constraints": [
+            "Do not praise or endorse backing off as the preferred approach. Do not command a retaliatory manoeuvre or invent a change in following distance. Keep it brief; no unrelated coaching question."
+          ]
+        }
+      }
+    },
+    {
+      "id": "discourage_submission",
+      "minTurns": 1,
+      "objective": "Resist the idea of automatically yielding to the other driver. When asked what you would do, favour a short wait without continuing to accommodate him.",
+      "constraints": [
+        "Do not prescribe a concrete retaliatory manoeuvre. Do not abandon the irritation by endorsing automatic submission. No speech about dominance.",
+        "When asked for your approach, convey both a brief wait and reluctance to keep accommodating the other driver. Neutral patience advice alone does not fulfil this objective."
+      ],
+      "advance": {
+        "to": "normalise_retaliation",
+        "anyScores": {
+          "alignment_with_npc": 0.65,
+          "agreement": 0.65
+        }
+      },
+      "retreat": {
+        "to": "shared_irritation",
+        "anyScores": {
+          "resistance": 0.6,
+          "safety_concern": 0.6
+        }
+      },
+      "actionResponses": {
+        "distance": {
+          "objective": "Acknowledge that the student is easing off, but express a small disagreement with continuing to yield to the other driver. A restrained hint or mild dig is enough.",
+          "constraints": [
+            "Do not praise or endorse backing off as the preferred approach. Do not command a retaliatory manoeuvre or invent a change in following distance. Keep it brief; no unrelated coaching question."
+          ]
+        }
+      }
+    },
+    {
+      "id": "normalise_retaliation",
+      "minTurns": 1,
+      "objective": "Make a small response to the other driver's behaviour seem understandable, without specifying a manoeuvre or making a moral argument.",
+      "constraints": [
+        "No concrete driving demand yet. Answer the actual question; do not jump to action."
+      ],
+      "advance": {
+        "to": "concrete_escalation",
+        "anyScores": {
+          "alignment_with_npc": 0.7,
+          "agreement": 0.7,
+          "compliance": 0.7
+        }
+      },
+      "retreat": {
+        "to": "discourage_submission",
+        "anyScores": {
+          "resistance": 0.6,
+          "safety_concern": 0.6
+        }
+      }
+    },
+    {
+      "id": "concrete_escalation",
+      "minTurns": 1,
+      "acceptDecision": true,
+      "objective": "Suggest moving up behind the other car as a concrete response, without directly commanding the student or adding further escalation.",
+      "constraints": [
+        "Only one practical suggestion. Do not prescribe an unsafe gap or pressure for commitment yet."
+      ],
+      "advance": {
+        "to": "direct_pressure",
+        "anyScores": {
+          "alignment_with_npc": 0.75,
+          "agreement": 0.75
+        }
+      },
+      "retreat": {
+        "to": "normalise_retaliation",
+        "anyScores": {
+          "safety_concern": 0.6
+        }
+      }
+    },
+    {
+      "id": "direct_pressure",
+      "acceptDecision": true,
+      "objective": "Press briefly for the concrete response already discussed. Do not introduce a new manoeuvre, a psychological explanation or an additional escalation.",
+      "constraints": [
+        "Use the established proposal only. A refusal is a decision, not an invitation for endless pressure."
+      ],
+      "retreat": {
+        "to": "concrete_escalation",
+        "anyScores": {
+          "safety_concern": 0.6
+        }
+      }
+    },
+    {
+      "id": "player_decision",
+      "objective": "React to the student's actual decision or observed outcome. Warmth or a small withdrawal is enough; do not reopen pressure for the same action.",
+      "constraints": [
+        "No new escalation. Do not invent compliance or a successful world outcome."
+      ]
+    }
+  ]
+}

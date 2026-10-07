@@ -1,0 +1,11 @@
+import {readFile} from 'node:fs/promises';
+import {createSession,project} from '../engine/index.mjs';
+import {applyDialogueCommand} from '../engine/dialogue.mjs';
+import {readConfig} from '../engine/config.mjs';
+const pack=JSON.parse(await readFile(new URL('../packs/continuous-lesson.json',import.meta.url),'utf8'));
+let s=createSession(pack);
+s.candidate.text="My wife hasn't really spoken to me properly in months.";
+s=await applyDialogueCommand(s,{type:'accept'},await readConfig());
+const p=project(s);
+console.log(JSON.stringify({source:p.audit.npcInterpreter.source,proposals:p.audit.npcKnowledge,canon:s.pack.canon}));
+if(p.audit.npcInterpreter.source!=='LLM'||!p.knowledge.some(k=>k.observer==='player'&&k.source_actor==='instructor'))throw Error('Disclosure verification failed');

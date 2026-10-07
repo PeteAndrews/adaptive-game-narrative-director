@@ -1,0 +1,48 @@
+{
+  "justificationWeights": {"MINIMISE": 0.9, "SELF_EXCEPTION": 0.8, "MISUNDERSTANDING_DEFENCE": 0.6, "DEFLECTION": 0.5},
+  "callbackWindowTurns": 12,
+  "modeFacades": {"REINFORCE": "GOOD_BLOKE", "RECOVER": "GOOD_BLOKE", "MINIMISE": "MISUNDERSTOOD_VICTIM", "PRESSURE": "COMMANDING_CONTROLLER", "REFRAME": "WOUNDED_AUTHORITY", "WITHDRAW": "WOUNDED_AUTHORITY", "REACT": "GOOD_BLOKE"},
+  "conflictHoldFacade": "WOUNDED_AUTHORITY",
+  "modeTactics": {"MINIMISE": "MINIMISE_PREVIOUS_PRESSURE", "WITHDRAW": "SUBTLE_DIG", "REFRAME": "EXPERIENCE_APPEAL"},
+  "stateStyles": [
+    {"state": "anger", "above": 0.55, "behaviour": "Less patience, terse disagreement and less willingness to explain. Do not announce your anger."},
+    {"state": "rapport", "above": 0.65, "behaviour": "Allow easy shorthand and optional shared humour. Warmth does not endorse correctness or erase grievances."},
+    {"state": "suspicion", "above": 0.6, "behaviour": "Answer cautiously; ask about an actual inconsistency rather than inventing a suspicion."}
+  ],
+  "facadeBehaviours": {
+    "PROFESSIONAL_INSTRUCTOR": "Concise, composed instruction when instruction is appropriate.",
+    "GOOD_BLOKE": "Easy, casual warmth and conversational shorthand.",
+    "WORLDLY_MENTOR": "A familiar, experienced tone without a lecture.",
+    "PROTECTIVE_ALLY": "Practical, reassuring support.",
+    "FAMILY_MAN": "Familiar domestic references only when relevant and established.",
+    "WOUNDED_AUTHORITY": "Restrained patience; a small dismissive correction or colder answer.",
+    "MISUNDERSTOOD_VICTIM": "Play down what was said; brief defensive reframing.",
+    "COMMANDING_CONTROLLER": "Direct demands and little conversational accommodation.",
+    "OLD_SELF_BIG_MAN": "Blunt confidence without invented past events.",
+    "PARANOID_MAN": "Guarded replies and testing of actual inconsistencies."
+  },
+  "tacticBehaviours": {
+    "FRIENDLY_BONDING": "Respond casually; allow a small shared joke.",
+    "PRAISE": "Offer a small approving reaction.",
+    "FLATTERY": "A modest favourable comparison only if grounded.",
+    "SELF_AGGRANDISING_HUMOUR": "A casual joke that lets him take a little credit.",
+    "SELF_DISCLOSURE": "Share one established personal detail when relevant.",
+    "PATERNAL_ADVICE": "Offer a brief practical correction with a patronising edge.",
+    "EXPERIENCE_APPEAL": "A small appeal to experience; no argument about authority.",
+    "SUBTLE_DIG": "A small deniable jab; do not explain hurt pride.",
+    "MOCK_WEAKNESS": "A dismissive reaction or sceptical correction, not a speech about weakness.",
+    "PARTNER_COMPARISON": "Use only a relevant, established partner reference; no invented comparison.",
+    "COMPETENCE_CHALLENGE": "A sceptical small correction or quietly question the decision.",
+    "WITHDRAW_APPROVAL": "Become shorter and less engaged; do not announce disappointment.",
+    "GUILT": "Briefly refer to the established favour of the free lesson.",
+    "DIRECT_COMMAND": "Give one immediate instruction, subject to world authority.",
+    "ANGER": "Sharper disagreement or an abrupt demand.",
+    "COLD_WITHDRAWAL": "Reduce engagement; a cold fragment is enough.",
+    "DEFEND_SELF": "Refuse to concede with a brief defensive response.",
+    "DWELL_ON_INSULT": "Return tersely to what was actually said.",
+    "RETALIATE": "Answer the actual insult with a personal jab; no invented allegation.",
+    "SET_LIMIT": "Tell the player to stop the immediate behaviour.",
+    "THREATEN_END_LESSON": "Threaten to stop the lesson without actually ending the scene.",
+    "MINIMISE_PREVIOUS_PRESSURE": "Play down the previous suggestion; no invented facts or moral explanation."
+  }
+}

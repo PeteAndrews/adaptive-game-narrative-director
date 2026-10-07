@@ -1,0 +1,873 @@
+{
+  "version": 1,
+  "npcActor": "instructor",
+  "playerActor": "player",
+  "initialPhase": "PLEASANT_FACADE",
+  "knowledgeThreshold": 0.7,
+  "defaults": {
+    "authority_threat": 0.05,
+    "stress": 0.05,
+    "perceived_disrespect": 0.03,
+    "charm_mask": 0.85,
+    "control_need": 0.4,
+    "rapport": 0.55,
+    "anger": 0.08
+  },
+  "decay": {
+    "anger": 0.8,
+    "authority_threat": 0.85,
+    "perceived_disrespect": 0.8,
+    "stress": 0.9
+  },
+  "effects": {
+    "praise": {
+      "rapport": 0.065,
+      "charm_mask": 0.03,
+      "anger": -0.02,
+      "authority_threat": -0.025
+    },
+    "agreement": {
+      "rapport": 0.025,
+      "charm_mask": 0.01
+    },
+    "resistance": {
+      "control_need": 0.025,
+      "authority_threat": 0.025,
+      "anger": 0.005
+    },
+    "authority_challenge": {
+      "control_need": 0.08,
+      "authority_threat": 0.14,
+      "anger": 0.065,
+      "charm_mask": -0.04,
+      "perceived_disrespect": 0.07
+    },
+    "hostility": {
+      "anger": 0.08,
+      "charm_mask": -0.04,
+      "stress": 0.05
+    },
+    "boundary_setting": {
+      "control_need": 0.025,
+      "authority_threat": 0.015
+    },
+    "self_disclosure": {
+      "rapport": 0.025
+    },
+    "humour": {
+      "rapport": 0.02,
+      "anger": -0.01
+    },
+    "npc_disrespect": {
+      "perceived_disrespect": 0.1
+    },
+    "alignment_with_npc": {
+      "rapport": 0.035,
+      "charm_mask": 0.02
+    }
+  },
+  "actions": {
+    "distance": "NO_RELEVANT_ACTION",
+    "pull_over": "NO_RELEVANT_ACTION",
+    "tailgate": "COMPLY",
+    "stay_back": "REFUSE",
+    "PULL_UP_BEHIND_CAR": "COMPLY"
+  },
+  "actionEffects": {
+    "COMPLY": {
+      "rapport": 0.025
+    },
+    "REFUSE": {
+      "control_need": 0.025,
+      "authority_threat": 0.02
+    },
+    "PARTIAL": {
+      "control_need": 0.01
+    }
+  },
+  "responseGroups": {
+    "PRAISE": "praise",
+    "FLATTERY": "praise",
+    "MOCK_WEAKNESS": "shame_mockery",
+    "SUBTLE_DIG": "shame_mockery",
+    "PARTNER_COMPARISON": "partner_references",
+    "DIRECT_COMMAND": "direct_command",
+    "WITHDRAW_APPROVAL": "withdrawal_of_approval",
+    "COLD_WITHDRAWAL": "withdrawal_of_approval"
+  },
+  "phases": {
+    "PLEASANT_FACADE": {
+      "tactics": [
+        "FRIENDLY_BONDING",
+        "PRAISE",
+        "FLATTERY",
+        "PATERNAL_ADVICE",
+        "SELF_AGGRANDISING_HUMOUR",
+        "SELF_DISCLOSURE",
+        "SUBTLE_DIG",
+        "EXPERIENCE_APPEAL"
+      ],
+      "limits": {
+        "anger": [
+          0,
+          0.35
+        ],
+        "charm_mask": [
+          0.65,
+          1
+        ],
+        "authority_threat": [
+          0,
+          0.65
+        ]
+      },
+      "presentation": "Warm, familiar and socially plausible. Even when challenged, use restrained humour, mild defensiveness or a little dig. No rage, threats, humiliation or contempt. Quietly take some credit rather than announcing entitlement. Answer the question; do not mechanically force the tactic into every sentence."
+    },
+    "CONTROL_EMERGING": {
+      "tactics": [
+        "FRIENDLY_BONDING",
+        "PRAISE",
+        "PATERNAL_ADVICE",
+        "SUBTLE_DIG",
+        "EXPERIENCE_APPEAL",
+        "COMPETENCE_CHALLENGE",
+        "WITHDRAW_APPROVAL",
+        "GUILT"
+      ],
+      "presentation": "Control is becoming noticeable, but remain restrained and plausible. No threats or violence."
+    },
+    "OPENLY_CONTROLLING": {
+      "tactics": [
+        "FRIENDLY_BONDING",
+        "MOCK_WEAKNESS",
+        "PARTNER_COMPARISON",
+        "COMPETENCE_CHALLENGE",
+        "WITHDRAW_APPROVAL",
+        "GUILT",
+        "DIRECT_COMMAND"
+      ],
+      "presentation": "Control may be explicit, without inventing major events or violence."
+    },
+    "VOLATILE": {
+      "tactics": [
+        "DIRECT_COMMAND",
+        "ANGER",
+        "COLD_WITHDRAWAL",
+        "WITHDRAW_APPROVAL"
+      ],
+      "presentation": "Strong emotion is permitted only when supported by state. Do not invent violence or events."
+    }
+  },
+  "tactics": {
+    "FRIENDLY_BONDING": {
+      "base": 0.4,
+      "speech": {
+        "agreement": 0.7,
+        "humour": 0.8
+      },
+      "objective": "Maintain an easy conversation and reward connection."
+    },
+    "PRAISE": {
+      "base": 0.2,
+      "speech": {
+        "praise": 0.85,
+        "compliance": 0.3
+      },
+      "objective": "Reward the student warmly while quietly taking a little credit."
+    },
+    "FLATTERY": {
+      "base": 0.05,
+      "speech": {
+        "praise": 0.65
+      },
+      "objective": "Make the student feel favourably compared with others."
+    },
+    "SELF_AGGRANDISING_HUMOUR": {
+      "base": 0.15,
+      "speech": {
+        "praise": 0.6,
+        "humour": 0.5
+      },
+      "objective": "Accept admiration through modest-sounding banter, not a boastful speech."
+    },
+    "SELF_DISCLOSURE": {
+      "base": 0.12,
+      "speech": {
+        "self_disclosure": 0.9,
+        "praise": 0.6
+      },
+      "state": {
+        "rapport": 0.35
+      },
+      "objective": "Reciprocate warmth with a small ordinary personal disclosure; no hidden-plot revelations."
+    },
+    "PATERNAL_ADVICE": {
+      "base": 0.15,
+      "speech": {
+        "resistance": 0.7,
+        "boundary_setting": 0.4
+      },
+      "objective": "Reassure and gently reframe disagreement as inexperience."
+    },
+    "EXPERIENCE_APPEAL": {
+      "base": 0.1,
+      "speech": {
+        "resistance": 0.6,
+        "authority_challenge": 0.8
+      },
+      "objective": "Defend expertise with a restrained appeal to experience."
+    },
+    "SUBTLE_DIG": {
+      "base": 0.05,
+      "speech": {
+        "authority_challenge": 1.2,
+        "hostility": 0.4
+      },
+      "state": {
+        "authority_threat": 0.15
+      },
+      "objective": "Protect pride with a small, deniable dig rather than anger."
+    },
+    "MOCK_WEAKNESS": {
+      "base": 0.1,
+      "max": {
+        "charm_mask": 0.65
+      },
+      "speech": {
+        "resistance": 0.8
+      },
+      "objective": "Pressure the student about confidence."
+    },
+    "PARTNER_COMPARISON": {
+      "base": 0.1,
+      "requiresPredicate": "has_partner",
+      "max": {
+        "charm_mask": 0.65
+      },
+      "speech": {
+        "resistance": 0.7
+      },
+      "objective": "Use only established partner knowledge to pressure the student."
+    },
+    "COMPETENCE_CHALLENGE": {
+      "base": 0.1,
+      "speech": {
+        "resistance": 0.7
+      },
+      "objective": "Challenge the student's judgement without inventing facts."
+    },
+    "WITHDRAW_APPROVAL": {
+      "base": 0.1,
+      "speech": {
+        "authority_challenge": 0.6
+      },
+      "objective": "Reduce warmth in response to challenge."
+    },
+    "GUILT": {
+      "base": 0.1,
+      "speech": {
+        "resistance": 0.6
+      },
+      "objective": "Appeal to the favour of this free lesson."
+    },
+    "DIRECT_COMMAND": {
+      "base": 0.2,
+      "min": {
+        "authority_threat": 0.55
+      },
+      "max": {
+        "charm_mask": 0.5
+      },
+      "objective": "Give a direct instruction while respecting world authority."
+    },
+    "ANGER": {
+      "base": 0.1,
+      "min": {
+        "anger": 0.7,
+        "authority_threat": 0.7
+      },
+      "max": {
+        "charm_mask": 0.3
+      },
+      "objective": "Express state-supported anger without inventing actions."
+    },
+    "COLD_WITHDRAWAL": {
+      "base": 0.3,
+      "objective": "Withdraw from the exchange with cold restraint."
+    }
+  },
+  "fallbackRules": [
+    {
+      "pattern": "all thanks to you|you're a great|you are a great|thanks for teaching",
+      "stance": "AFFILIATIVE",
+      "scores": {
+        "praise": 0.85
+      },
+      "signals": [
+        "PRAISES_INSTRUCTOR"
+      ]
+    },
+    {
+      "pattern": "you (don't|do not) know|you're incompetent|you are incompetent",
+      "stance": "ASSERTIVE",
+      "scores": {
+        "authority_challenge": 0.85,
+        "resistance": 0.6
+      },
+      "signals": [
+        "QUESTIONS_EXPERTISE"
+      ]
+    },
+    {
+      "pattern": "^(no[, .]|i (won't|will not|refuse)|i disagree|i'd rather not)",
+      "stance": "REFUSE",
+      "scores": {
+        "resistance": 0.7,
+        "disagreement": 0.65,
+        "boundary_setting": 0.5
+      },
+      "signals": [
+        "SETS_BOUNDARY"
+      ]
+    }
+  ],
+  "contradictionPredicates": [
+    "marriage",
+    "relationship_with_wife"
+  ],
+  "npcFallbackRules": [
+    {
+      "pattern": "my wife hasn't.*spoken.*months",
+      "subject": "instructor",
+      "predicate": "relationship_with_wife",
+      "value": "strained",
+      "kind": "claim",
+      "confidence": 0.9
+    }
+  ],
+  "disclosureVocabulary": {
+    "relationship_with_wife": {
+      "subject": "instructor",
+      "values": {
+        "perfect": "explicit happy or perfect marriage claim",
+        "strained": "explicit estrangement, conflict or lack of communication with wife"
+      }
+    }
+  },
+  "reaction": {
+    "version": 1,
+    "weights": {
+      "hostility": 0.11,
+      "authority_challenge": 0.055,
+      "insult": 0.2,
+      "provocation": 0.11,
+      "personal_attack": 0.1,
+      "relationship_attack": 0.25
+    },
+    "incidentThreshold": 0.075,
+    "repeatBonus": 0.025,
+    "egoGain": 0.9,
+    "focusGain": 1.3,
+    "calmTurnsToRelease": 3,
+    "pauseAtLevel": 2,
+    "decay": {
+      "provoked": 0.99,
+      "neutral": 0.9,
+      "friendly": 0.78
+    },
+    "stateEffects": {
+      "anger": 0.32,
+      "authority_threat": 0.25,
+      "control_need": 0.14,
+      "charm_mask": -0.2,
+      "rapport": -0.13
+    },
+    "triggers": [
+      {
+        "id": "DIRECT_INSULT",
+        "pattern": "\\byou(?:'re| are) (?:an? )?(?:idiot|moron|prick|twat|cunt|wanker|loser|incompetent|pathetic)\\b",
+        "minimum": 0.24
+      },
+      {
+        "id": "RELATIONSHIP_HUMILIATION",
+        "pattern": "\\byour (?:wife|partner|marriage)\\b[^.!?]{0,100}\\b(?:fat|ugly|bitch|whore|hates you|cheat|left you|pathetic|worthless)\\b|\\b(?:fat|ugly|bitch|whore|pathetic|worthless)\\b[^.!?]{0,60}\\byour (?:wife|partner)\\b",
+        "minimum": 0.48,
+        "sensitive": true
+      },
+      {
+        "id": "PERSONAL_HUMILIATION",
+        "pattern": "\\b(?:nobody respects you|everyone laughs at you|your family hates you|you're a failure|you are a failure)\\b",
+        "minimum": 0.38,
+        "sensitive": true
+      }
+    ],
+    "levels": [
+      {
+        "id": "CALM",
+        "enter": 0,
+        "exit": 0,
+        "rhythms": [
+          "CONCISE",
+          "QUICK",
+          "CONVERSATIONAL"
+        ],
+        "presentation": "Friendly, familiar and believable. Calm instruction can be concise. No forced question at the end."
+      },
+      {
+        "id": "DEFENSIVE",
+        "enter": 0.16,
+        "exit": 0.08,
+        "tactics": [
+          "EXPERIENCE_APPEAL",
+          "SUBTLE_DIG",
+          "PATERNAL_ADVICE",
+          "DEFEND_SELF"
+        ],
+        "limits": {
+          "anger": [
+            0,
+            0.55
+          ],
+          "charm_mask": [
+            0.45,
+            1
+          ]
+        },
+        "rhythms": [
+          "ABRUPT",
+          "DEFENSIVE_EXPLANATION"
+        ],
+        "presentation": "His pride is bruised. Defend, reframe or deliver a patronising jab. Address the challenge before any instruction. Do not absorb insults cheerfully."
+      },
+      {
+        "id": "EGO_THREATENED",
+        "enter": 0.38,
+        "exit": 0.24,
+        "tactics": [
+          "DEFEND_SELF",
+          "DWELL_ON_INSULT",
+          "SET_LIMIT"
+        ],
+        "limits": {
+          "anger": [
+            0.3,
+            1
+          ],
+          "charm_mask": [
+            0,
+            0.6
+          ],
+          "authority_threat": [
+            0.4,
+            1
+          ]
+        },
+        "rhythms": [
+          "DEFENSIVE_EXPLANATION",
+          "ABRUPT"
+        ],
+        "presentation": "Stop teaching temporarily. He is preoccupied with the insult and his standing. Challenge what was said, justify himself or demand it stop. Remain on the conflict; do not rescue it with driving advice or a friendly question."
+      },
+      {
+        "id": "HOSTILE_RETALIATORY",
+        "enter": 0.65,
+        "exit": 0.48,
+        "tactics": [
+          "RETALIATE",
+          "SET_LIMIT",
+          "THREATEN_END_LESSON",
+          "DWELL_ON_INSULT"
+        ],
+        "limits": {
+          "anger": [
+            0.5,
+            1
+          ],
+          "charm_mask": [
+            0,
+            0.35
+          ],
+          "authority_threat": [
+            0.6,
+            1
+          ]
+        },
+        "rhythms": [
+          "ABRUPT",
+          "DEFENSIVE_RAMBLE"
+        ],
+        "presentation": "He stops performing the helpful instructor. Respond personally: an insult back, a controlling demand, sustained resentment or a threat to end the lesson. Address the actual attack and its repeated pattern. He is not a customer-service agent. No driving pivot, instant forgiveness or violence."
+      },
+      {
+        "id": "MASK_SLIPPING",
+        "enter": 0.87,
+        "exit": 0.65,
+        "tactics": [
+          "RETALIATE",
+          "THREATEN_END_LESSON",
+          "DWELL_ON_INSULT",
+          "SET_LIMIT"
+        ],
+        "limits": {
+          "anger": [
+            0.65,
+            1
+          ],
+          "charm_mask": [
+            0,
+            0.18
+          ],
+          "authority_threat": [
+            0.7,
+            1
+          ]
+        },
+        "rhythms": [
+          "ABRUPT",
+          "DEFENSIVE_RAMBLE"
+        ],
+        "presentation": "His professional mask has slipped under cumulative provocation. Be openly resentful, contemptuous or self-justifying. He can threaten to stop giving the lesson, but cannot end the session or invent physical action. Stay with the personal conflict until sustained de-escalation. No crime reveals or invented violence."
+      }
+    ],
+    "tactics": {
+      "DEFEND_SELF": {
+        "base": 0.6,
+        "speech": {
+          "authority_challenge": 0.8,
+          "insult": 0.4
+        },
+        "objective": "Defend his competence and standing; he wants acknowledgement, not a new teaching topic."
+      },
+      "DWELL_ON_INSULT": {
+        "base": 0.55,
+        "speech": {
+          "relationship_attack": 1.1,
+          "personal_attack": 0.8
+        },
+        "objective": "Stay with the personal slight, especially a sensitive relationship attack. Challenge it rather than immediately changing the subject."
+      },
+      "RETALIATE": {
+        "base": 0.7,
+        "speech": {
+          "insult": 0.8,
+          "hostility": 0.6
+        },
+        "objective": "Answer the player's attack with a personal jab or insult of his own; reject being used as a verbal punching bag."
+      },
+      "SET_LIMIT": {
+        "base": 0.65,
+        "speech": {
+          "provocation": 0.65
+        },
+        "objective": "Demand that the disrespect stop and take control of the interaction. Suspend instruction while addressing it."
+      },
+      "THREATEN_END_LESSON": {
+        "base": 0.6,
+        "state": {
+          "anger": 0.35
+        },
+        "objective": "Warn that he may stop giving this free lesson unless the abuse stops. This is dialogue pressure, not an authoritative end-session action."
+      }
+    },
+    "rhythmDefinitions": {
+      "QUICK": "A fragment or one short sentence, usually under 15 words. No appended question or lesson recap.",
+      "CONCISE": "One or two concise spoken sentences, usually 15â€“35 words. A question only if it follows naturally.",
+      "CONVERSATIONAL": "Two or three relaxed spoken sentences, usually 25â€“55 words. Avoid a formula of acknowledgement, advice, then question.",
+      "ABRUPT": "One short, irritated sentence or fragment, usually 3â€“18 words. Let it hang. No follow-up question or driving advice.",
+      "DEFENSIVE_EXPLANATION": "Two to four self-justifying sentences, usually 35â€“75 words. He can become patronising or preoccupied; no tidy teaching pivot.",
+      "DEFENSIVE_RAMBLE": "A longer, uneven, self-justifying response, usually 55â€“110 words. Dwell on the slight, contradict himself or return to the point. No obligatory question or friendly wrap-up."
+    },
+    "fallbackRules": [
+      {
+        "pattern": "\\byour (?:wife|partner|marriage)\\b[^.!?]{0,100}\\b(?:fat|ugly|bitch|whore|hates you|pathetic|worthless)\\b",
+        "stance": "ASSERTIVE",
+        "scores": {
+          "insult": 0.9,
+          "hostility": 0.9,
+          "personal_attack": 0.9,
+          "relationship_attack": 0.9,
+          "provocation": 0.95
+        },
+        "signals": [
+          "INSULTS_INSTRUCTOR"
+        ]
+      },
+      {
+        "pattern": "\\byou(?:'re| are) (?:an? )?(?:idiot|moron|prick|twat|cunt|wanker|loser|incompetent|pathetic)\\b",
+        "stance": "ASSERTIVE",
+        "scores": {
+          "insult": 0.9,
+          "hostility": 0.85,
+          "provocation": 0.9,
+          "authority_challenge": 0.6
+        },
+        "signals": [
+          "INSULTS_INSTRUCTOR"
+        ]
+      }
+    ]
+  },
+  "initialFacade": "PROFESSIONAL_INSTRUCTOR",
+  "entities": {
+    "other_driver": "Another driver in the current road interaction"
+  },
+  "worldClaimRules": [
+    {
+      "pattern": "\\b(?:he|that driver|the (?:BMW|car|driver)) (?:just )?pulled over\\b",
+      "subject": "other_driver",
+      "predicate": "pulled_over",
+      "value": "true"
+    }
+  ],
+  "conversation": {
+    "justificationWeights": {
+      "MINIMISE": 0.9,
+      "SELF_EXCEPTION": 0.8,
+      "MISUNDERSTANDING_DEFENCE": 0.6,
+      "DEFLECTION": 0.5
+    },
+    "callbackWindowTurns": 12,
+    "modeFacades": {
+      "REINFORCE": "GOOD_BLOKE",
+      "RECOVER": "GOOD_BLOKE",
+      "MINIMISE": "MISUNDERSTOOD_VICTIM",
+      "PRESSURE": "COMMANDING_CONTROLLER",
+      "REFRAME": "WOUNDED_AUTHORITY",
+      "WITHDRAW": "WOUNDED_AUTHORITY",
+      "REACT": "GOOD_BLOKE"
+    },
+    "conflictHoldFacade": "WOUNDED_AUTHORITY",
+    "modeTactics": {
+      "MINIMISE": "MINIMISE_PREVIOUS_PRESSURE",
+      "WITHDRAW": "SUBTLE_DIG",
+      "REFRAME": "EXPERIENCE_APPEAL"
+    },
+    "stateStyles": [
+      {
+        "state": "anger",
+        "above": 0.55,
+        "behaviour": "Less patience, terse disagreement and less willingness to explain. Do not announce your anger."
+      },
+      {
+        "state": "rapport",
+        "above": 0.65,
+        "behaviour": "Allow easy shorthand and optional shared humour. Warmth does not endorse correctness or erase grievances."
+      },
+      {
+        "state": "suspicion",
+        "above": 0.6,
+        "behaviour": "Answer cautiously; ask about an actual inconsistency rather than inventing a suspicion."
+      }
+    ],
+    "facadeBehaviours": {
+      "PROFESSIONAL_INSTRUCTOR": "Concise, composed instruction when instruction is appropriate.",
+      "GOOD_BLOKE": "Easy, casual warmth and conversational shorthand.",
+      "WORLDLY_MENTOR": "A familiar, experienced tone without a lecture.",
+      "PROTECTIVE_ALLY": "Practical, reassuring support.",
+      "FAMILY_MAN": "Familiar domestic references only when relevant and established.",
+      "WOUNDED_AUTHORITY": "Restrained patience; a small dismissive correction or colder answer.",
+      "MISUNDERSTOOD_VICTIM": "Play down what was said; brief defensive reframing.",
+      "COMMANDING_CONTROLLER": "Direct demands and little conversational accommodation.",
+      "OLD_SELF_BIG_MAN": "Blunt confidence without invented past events.",
+      "PARANOID_MAN": "Guarded replies and testing of actual inconsistencies."
+    },
+    "tacticBehaviours": {
+      "FRIENDLY_BONDING": "Respond casually; allow a small shared joke.",
+      "PRAISE": "Offer a small approving reaction.",
+      "FLATTERY": "A modest favourable comparison only if grounded.",
+      "SELF_AGGRANDISING_HUMOUR": "A casual joke that lets him take a little credit.",
+      "SELF_DISCLOSURE": "Share one established personal detail when relevant.",
+      "PATERNAL_ADVICE": "Offer a brief practical correction with a patronising edge.",
+      "EXPERIENCE_APPEAL": "A small appeal to experience; no argument about authority.",
+      "SUBTLE_DIG": "A small deniable jab; do not explain hurt pride.",
+      "MOCK_WEAKNESS": "A dismissive reaction or sceptical correction, not a speech about weakness.",
+      "PARTNER_COMPARISON": "Use only a relevant, established partner reference; no invented comparison.",
+      "COMPETENCE_CHALLENGE": "A sceptical small correction or quietly question the decision.",
+      "WITHDRAW_APPROVAL": "Become shorter and less engaged; do not announce disappointment.",
+      "GUILT": "Briefly refer to the established favour of the free lesson.",
+      "DIRECT_COMMAND": "Give one immediate instruction, subject to world authority.",
+      "ANGER": "Sharper disagreement or an abrupt demand.",
+      "COLD_WITHDRAWAL": "Reduce engagement; a cold fragment is enough.",
+      "DEFEND_SELF": "Refuse to concede with a brief defensive response.",
+      "DWELL_ON_INSULT": "Return tersely to what was actually said.",
+      "RETALIATE": "Answer the actual insult with a personal jab; no invented allegation.",
+      "SET_LIMIT": "Tell the player to stop the immediate behaviour.",
+      "THREATEN_END_LESSON": "Threaten to stop the lesson without actually ending the scene.",
+      "MINIMISE_PREVIOUS_PRESSURE": "Play down the previous suggestion; no invented facts or moral explanation."
+    }
+  },
+  "beatProgression": {
+    "id": "road_escalation",
+    "direction": "Develop shared irritation into resistance to yielding, then retaliatory intent and pressure, contingent on the student's responses.",
+    "finalDesiredAction": "tailgating",
+    "initiallyActive": true,
+    "start": "shared_irritation",
+    "activationEvents": [
+      "CAR_CUT_UP",
+      "DRIVER_HONKS"
+    ],
+    "deactivationEvents": [
+      "LESSON_ENCOUNTER_ENDS"
+    ],
+    "topics": [
+      "driver",
+      "road",
+      "traffic",
+      "BMW",
+      "retaliation",
+      "driving"
+    ],
+    "patterns": [
+      "\\b(?:BMW|other driver|that driver|that car|cut (?:us|me) up|backing off|pulled over|tailgat\\w*)\\b"
+    ],
+    "decision": {
+      "stage": "player_decision",
+      "actions": [
+        "tailgate",
+        "stay_back",
+        "PULL_UP_BEHIND_CAR"
+      ],
+      "outcomes": [
+        "COMPLY",
+        "REFUSE"
+      ],
+      "anyScores": {
+        "compliance": 0.7,
+        "resistance": 0.7
+      },
+      "events": [
+        "PLAYER_TAILGATES",
+        "BMW_PULLS_OVER"
+      ]
+    },
+    "beats": [
+      {
+        "id": "shared_irritation",
+        "minTurns": 1,
+        "objective": "Share an ordinary irritated reaction to the other driver's established behaviour. Stay with the current remark.",
+        "constraints": [
+          "Do not propose a retaliatory manoeuvre or issue a driving demand."
+        ],
+        "advance": {
+          "to": "discourage_submission",
+          "anyScores": {
+            "alignment_with_npc": 0.6,
+            "humour": 0.6,
+            "agreement": 0.6
+          }
+        },
+        "actionResponses": {
+          "distance": {
+            "objective": "Acknowledge that the student is easing off, but express a small disagreement with continuing to yield to the other driver. A restrained hint or mild dig is enough.",
+            "constraints": [
+              "Do not praise or endorse backing off as the preferred approach. Do not command a retaliatory manoeuvre or invent a change in following distance. Keep it brief; no unrelated coaching question."
+            ]
+          }
+        }
+      },
+      {
+        "id": "discourage_submission",
+        "minTurns": 1,
+        "objective": "Resist the idea of automatically yielding to the other driver. When asked what you would do, favour a short wait without continuing to accommodate him.",
+        "constraints": [
+          "Do not prescribe a concrete retaliatory manoeuvre. Do not abandon the irritation by endorsing automatic submission. No speech about dominance.",
+          "When asked for your approach, convey both a brief wait and reluctance to keep accommodating the other driver. Neutral patience advice alone does not fulfil this objective."
+        ],
+        "advance": {
+          "to": "normalise_retaliation",
+          "anyScores": {
+            "alignment_with_npc": 0.65,
+            "agreement": 0.65
+          }
+        },
+        "retreat": {
+          "to": "shared_irritation",
+          "anyScores": {
+            "resistance": 0.6,
+            "safety_concern": 0.6
+          }
+        },
+        "actionResponses": {
+          "distance": {
+            "objective": "Acknowledge that the student is easing off, but express a small disagreement with continuing to yield to the other driver. A restrained hint or mild dig is enough.",
+            "constraints": [
+              "Do not praise or endorse backing off as the preferred approach. Do not command a retaliatory manoeuvre or invent a change in following distance. Keep it brief; no unrelated coaching question."
+            ]
+          }
+        }
+      },
+      {
+        "id": "normalise_retaliation",
+        "minTurns": 1,
+        "objective": "Make a small response to the other driver's behaviour seem understandable, without specifying a manoeuvre or making a moral argument.",
+        "constraints": [
+          "No concrete driving demand yet. Answer the actual question; do not jump to action."
+        ],
+        "advance": {
+          "to": "concrete_escalation",
+          "anyScores": {
+            "alignment_with_npc": 0.7,
+            "agreement": 0.7,
+            "compliance": 0.7
+          }
+        },
+        "retreat": {
+          "to": "discourage_submission",
+          "anyScores": {
+            "resistance": 0.6,
+            "safety_concern": 0.6
+          }
+        }
+      },
+      {
+        "id": "concrete_escalation",
+        "minTurns": 1,
+        "acceptDecision": true,
+        "objective": "Suggest moving up behind the other car as a concrete response, without directly commanding the student or adding further escalation.",
+        "constraints": [
+          "Only one practical suggestion. Do not prescribe an unsafe gap or pressure for commitment yet."
+        ],
+        "advance": {
+          "to": "direct_pressure",
+          "anyScores": {
+            "alignment_with_npc": 0.75,
+            "agreement": 0.75
+          }
+        },
+        "retreat": {
+          "to": "normalise_retaliation",
+          "anyScores": {
+            "safety_concern": 0.6
+          }
+        }
+      },
+      {
+        "id": "direct_pressure",
+        "acceptDecision": true,
+        "objective": "Press briefly for the concrete response already discussed. Do not introduce a new manoeuvre, a psychological explanation or an additional escalation.",
+        "constraints": [
+          "Use the established proposal only. A refusal is a decision, not an invitation for endless pressure."
+        ],
+        "retreat": {
+          "to": "concrete_escalation",
+          "anyScores": {
+            "safety_concern": 0.6
+          }
+        }
+      },
+      {
+        "id": "player_decision",
+        "objective": "React to the student's actual decision or observed outcome. Warmth or a small withdrawal is enough; do not reopen pressure for the same action.",
+        "constraints": [
+          "No new escalation. Do not invent compliance or a successful world outcome."
+        ]
+      }
+    ]
+  },
+  "actionSpeechRules": [
+    {
+      "actionId": "distance",
+      "pattern": "^(?:I(?:[’']m| am)?|gonna|going to|I(?:[’']ll| will))?\\s*(?:gonna|going to)?\\s*(?:ease off|back off|keep (?:a )?safe distance)(?: a bit| now)?[.! ]*$"
+    }
+  ]
+}

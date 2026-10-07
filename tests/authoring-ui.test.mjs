@@ -1,0 +1,27 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import {createSession,project} from '../engine/index.mjs';
+import {lengthControl,choices} from '../public/length-control.js';
+import {dialogueBoundaries} from '../public/dialogue-history.js';
+test('actual authoring UI renders saved scene access and selectable dialogue controls without discarding draft edits',async()=>{
+ const pack=JSON.parse(readFileSync(new URL('../packs/continuous-lesson.json',import.meta.url))),session=createSession(pack);
+ const p=project(session);p.transcript=[{id:'line-one',type:'utterance',text:'A previous line.'}];
+ const elements={'#app':{innerHTML:''},'#draft':{value:'Unsaved edit'},'#draft-direction':{value:'Author note'},'#draft-length':{value:'EXPLAIN'},'#draft-knowledge':{value:'[]'}},listeners={};
+ const context=vm.createContext({crypto:{randomUUID:()=> 'new-section'},lengthControl,choices,dialogueBoundaries,directorPanel:()=>'',localStorage:{getItem:()=>null},document:{querySelector:id=>elements[id]??null,addEventListener:(name,fn)=>listeners[name]=fn}});
+ let source=readFileSync(new URL('../public/app.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');source=source.slice(0,source.lastIndexOf('load().catch'));
+ vm.runInContext(source+'\nglobalThis.install=(x)=>{pack=x.pack;session=x.session;projection=x.projection;scenes=x.scenes;activeSceneId="saved-one";mode="director";provider={configured:true};};globalThis.show=render;',context);
+ context.install({pack,session,projection:p,scenes:[{id:'saved-one',name:'A saved scene'},{id:'saved-two',name:'Another scene'}]});context.show();
+ assert.match(elements['#app'].innerHTML,/production-scene/);assert.match(elements['#app'].innerHTML,/value="saved-two"/);assert.match(elements['#app'].innerHTML,/select-line:line-one/);
+ await listeners.click({target:{closest:()=>({dataset:{do:'select-line:line-one'}})}});
+ assert.match(elements['#app'].innerHTML,/Restart before this line/);assert.match(elements['#app'].innerHTML,/Branch after this line/);assert.equal(elements['#draft'].value,'Unsaved edit');assert.equal(elements['#draft-length'].value,'EXPLAIN');
+ vm.runInContext('mode="script";editNode=pack.start;render();',context);assert.match(elements['#app'].innerHTML,/Saved scene name/);assert.match(elements['#app'].innerHTML,/Save as new scene/);assert.ok(!elements['#app'].innerHTML.includes('Current production'));assert.ok(!elements['#app'].innerHTML.includes('mode:play'));assert.ok(!elements['#app'].innerHTML.includes('+ New conversation'));assert.match(elements['#app'].innerHTML,/Delete session/);
+ assert.match(elements['#app'].innerHTML,/Sessions in this scene/);assert.match(elements['#app'].innerHTML,/\+ Add session/);assert.match(elements['#app'].innerHTML,/Start in Director/);
+ for(const [id,value] of Object.entries({'scene-name':pack.title,'node-title':pack.nodes[pack.start].title,'authored-phase':pack.behaviour.initialPhase,'character-prompt':'First session direction','node-text':pack.nodes[pack.start].text,'node-tactic':'friendly_bonding','node-objective':'A greeting','node-fallback':pack.start}))elements['#'+id]={value};
+ pack.nodes[pack.start].choices.forEach((choice,i)=>{for(const [key,value] of [['label',choice.label],['target',choice.target],['stance',choice.stance]])elements[`[data-choice-${key}="${i}"]`]={value};});
+ await listeners.click({target:{closest:()=>({dataset:{do:'add-node'}})}});assert.match(elements['#app'].innerHTML,/Session 2/);assert.match(elements['#app'].innerHTML,/node:session_new-section/);
+ elements['#node-title'].value='Start car';elements['#character-prompt'].value='Second session direction';elements['#node-fallback'].value='session_new-section';
+ await listeners.click({target:{closest:()=>({dataset:{do:'node:'+pack.start}})}});
+ const saved=vm.runInContext('JSON.stringify(pack)',context),updated=JSON.parse(saved);assert.equal(updated.nodes[pack.start].characterPrompt,'First session direction');assert.equal(updated.nodes['session_new-section'].characterPrompt,'Second session direction');assert.equal(updated.nodes['session_new-section'].title,'Start car');assert.equal(updated.characterPrompt,pack.characterPrompt);
+});
