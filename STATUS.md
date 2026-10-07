@@ -1,5 +1,29 @@
 # Dialogue behaviour milestone — 6 October 2026
 
+## Branch-correct knowledge and historical-edit acceptance tests - 7 October
+
+- Added deterministic acceptance tests using the girlfriend/pushover/too aggressive examples. Shared pre-fork knowledge retains identical knowledge/source/commit IDs and acquisition origin. Branch A learns both disclosures; branch B retains only the shared disclosure. Repeated checkout and serialized replay reconstruct the correct observer perspective with no extraction/generation calls.
+- Rewinding and replacing an earlier turn requires a divergent branch. The original branch and its provenance remain byte-for-byte structurally unchanged; the new continuation excludes superseded downstream knowledge and learns the replacement only after a successful command. Failed generation commits no replacement knowledge.
+- Cursor rewind temporarily excludes later knowledge and forward seek restores the exact same records without extraction. Regenerated/edited-away NPC drafts never become player knowledge; only accepted final words do. Selected-branch/cursor exports exclude other futures, superseded claims and discarded drafts while preserving shared origin.
+- All 124 offline tests pass. Existing replay/branch behavior satisfies the added invariants; no engine changes, manual ledger patching, live model calls or user-history edits were needed. Optional final-cut storage remains unimplemented; tests cover the current working-take/branch/cursor export.
+## Knowledge foundation normalization - 7 October
+
+- Added engine/knowledge-provenance.mjs without changing the triple/event architecture. New committed disclosures record acquisition method disclosure and attitude heard independently of legacy kind. Envelopes include scene/authored-session/take/original-branch/turn IDs, source and commit event IDs, timestamp, exact evidence, extractor and supporting-event references. New events have timestamps. No attitude propagation or second-order knowledge is introduced.
+- Authored/imported starting knowledge receives deterministic source IDs and explicit authored provenance, retaining original labels such as previous lessons only as source labels. No fictional conversational events are created. New records persist envelopes; legacy records normalize during projection without rewriting histories. Unavailable historical timestamps/branch origins remain null.
+- Player-model observations persist inference envelopes in player_model_delta and project separately into inferences, with explicit observer, evidence and support links. Inference confidence remains null when unavailable; extraction confidence is separate. Inferences never become facts. World claims remain heard claims distinct from authoritative authored/world-event observations.
+- Branches preserve copied acquisition IDs/origins and now record parent/fork metadata. NPC drafts remain outside knowledge until accepted; failed commands roll back. Export v3 contains selected-branch/cursor knowledge, inferences, world claims/facts, scoped learning/source events and dialogue event/turn IDs. Final-cut membership remains future work and cannot overwrite acquisition origin.
+- Knowledge sidebar now names the observer and attitude in ordinary language (Instructor has heard, Player has heard, accepts/suspects where explicit). Evidence is readable; kind, predicates, IDs, confidence and acquisition metadata sit under Technical details.
+- 121 offline tests pass, including both disclosure directions, discarded candidates/rollback, inference and world separation, branch/replay/export provenance, actual legacy workspace restart without rewriting, authored origin persistence and perspective labels/escaping. No live model calls or user-history migrations were performed. Writer Canon, context inheritance and graphs are not implemented in this pass.
+## Attribute and Jev diagnostics export - 7 October
+
+- NPC attributes were already persisted in replayable state events but omitted from the simplified take export. Export version 2 includes current projected attributes, phase, facade and reaction, plus selected-branch state-change records up to the timeline cursor.
+- Added bounded per-turn interpretation fields (source, stance, confidence, scores, targets, completion) and recorded Jev enabled/key-configured/live/fallback diagnostics, plus selected Director decision fields. Missing Jev records remain null; fallback is explicit. Keys, raw provider requests, old branches, future events and full historical setup remain excluded. No additional provider requests are made.
+- 112 offline tests pass, covering attributes, state changes, Jev live/fallback/missing records, credentials exclusion, timeline scope and immutable histories.
+## Clean current-take export - 7 October
+
+- Director export previously downloaded the internal saved record: all branches, future events after rewind and the original complete scene snapshot. It now exports a dialogue reading copy of the selected branch at the current timeline position, with scene/session/take identifiers and spoken/world lines only.
+- Export current take excludes uncommitted NPC drafts, inactive branches, discarded future events, historical setup and internal state/evidence. It does not delete or rewrite saved history; the exported JSON is not a replay archive. Export game pack remains the separate authored-setup export.
+- 111 offline tests pass. New tests cover branch selection, rewind limits, drafts/old setup exclusion, unchanged saved records and the actual UI download path. No model calls or changes to user histories were made.
 ## Scene manager and Director workspace - 7 October
 
 - Removed Play and the redundant New conversation button. Director is now the dialogue workspace; its Current production panel selects scene, authored session and working take. The panel is omitted from Scene setup and Scene manager. Take choices are filtered by both scene and authored session.

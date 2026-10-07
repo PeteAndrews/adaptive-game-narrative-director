@@ -72,7 +72,7 @@ const server=http.createServer((req,res)=>{queue=queue.then(async()=>{
     else if(req.method==='POST'&&url.pathname==='/api/sessions'){
       if(b.sceneId&&!Object.hasOwn(library.scenes,b.sceneId))throw Error('Unknown saved scene');
       const source=structuredClone(b.sceneId?library.scenes[b.sceneId].pack:pack);upgradeResponsePolicy(source,behaviour);
-      let s=createSession(source,{node:b.node??source.start});s.sceneId=b.sceneId??library.activeSceneId;if(b.autoAccept===true)s=await applyDialogueCommand(s,{type:'accept'},await readConfig());await save('sessions',{...sessions,[s.id]:s});sessions[s.id]=s;result={session:s,projection:project(s)};
+      let s=createSession(source,{node:b.node??source.start,sceneId:b.sceneId??library.activeSceneId});s.sceneId=b.sceneId??library.activeSceneId;if(b.autoAccept===true)s=await applyDialogueCommand(s,{type:'accept'},await readConfig());await save('sessions',{...sessions,[s.id]:s});sessions[s.id]=s;result={session:s,projection:project(s)};
     }
     else {
       const m=url.pathname.match(/^\/api\/sessions\/([\w-]+)$/);

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
-import {mkdtemp} from 'node:fs/promises';
+import {mkdtemp,readFile,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 async function startServer(data){
@@ -78,4 +78,16 @@ test('HTTP session persistence, secret-file denial and cross-origin protection',
     assert.equal((await fetch(base+'/.env')).status,404);
     assert.equal((await fetch(base+'/api/sessions',{method:'POST',headers:{Origin:'https://other.example','Content-Type':'application/json'},body:'{}'})).status,400);
   } finally {child.kill();await new Promise(resolve=>child.exitCode!==null?resolve():child.once('exit',resolve));}
+});
+
+test('legacy workspace without acquisition or timestamps loads without rewriting history; new authored origins persist',async()=>{
+ const data=await mkdtemp(path.join(tmpdir(),'dialogue-knowledge-legacy-'));let server=await startServer(data);
+ try{
+  const response=await fetch(server.base+'/api/sessions',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});assert.equal(response.status,200);const current=await response.json();const id=current.session.id;
+  const origin=current.projection.knowledge[0].acquisition;assert.equal(origin.method,'authored');assert.equal(origin.scene_id,current.session.sceneId);assert.equal(origin.take_id,id);
+  await server.stop();server=await startServer(data);const saved=await (await fetch(server.base+'/api/sessions/'+id)).json();assert.deepEqual(saved.projection.knowledge[0].acquisition,origin);await server.stop();
+  const file=path.join(data,'workspace.json'),workspace=JSON.parse(await readFile(file,'utf8')),take=workspace.sessions[id];delete take.createdAt;
+  for(const k of take.pack.knowledge){delete k.acquisition;delete k.id;}for(const branch of Object.values(take.branches))for(const event of branch.events){delete event.timestamp;for(const k of event.knowledge??[])delete k.acquisition;}
+  const old=JSON.stringify(workspace);await writeFile(file,old);server=await startServer(data);const loaded=await (await fetch(server.base+'/api/sessions/'+id)).json();assert.equal(loaded.projection.knowledge[0].acquisition.timestamp,null);assert.equal(loaded.projection.knowledge[0].acquisition.method,'authored');assert.equal(await readFile(file,'utf8'),old);
+ }finally{await server.stop();}
 });
